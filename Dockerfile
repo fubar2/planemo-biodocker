@@ -16,6 +16,7 @@ LABEL extra.identifiers.biotools=planemo
 MAINTAINER Ross Lazarus <ross.lazarus@gmail.com>
 ARG GALAXY_RELEASE=release_20.05
 ARG GALAXY_REPO=https://github.com/galaxyproject/galaxy
+ARG GALAXY_ROOT=/home/biodocker/galaxy-central
 USER root
 RUN apt-get update \
 && apt-get install -y python3 python3-venv python3-pip python3-wheel mercurial wget unzip nano nodeenv \
