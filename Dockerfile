@@ -25,7 +25,7 @@ RUN apt-get update \
 && cp /usr/local/bin/planemo /home/biodocker/bin/ \
 && hg clone https://fubar@toolshed.g2.bx.psu.edu/repos/fubar/tacrev  /home/biodocker/tacrev \
 && mv /home/biodocker/tacrev/tacrev/* /home/biodocker/tacrev/ \
-&& mkdir -p "${GALAXY_ROOT}" \
+&& mkdir -p "$GALAXY_ROOT" \
 && curl -L -s $GALAXY_REPO/archive/$GALAXY_RELEASE.tar.gz | tar xzf - --strip-components=1 -C $GALAXY_ROOT \
 && python3 -m venv /home/biodocker/galaxy-central/.venv  \
 && . /home/biodocker/galaxy-central/.venv/bin/activate && /home/biodocker/galaxy-central/.venv/bin/python3 -m pip install --upgrade pip wheel \
