@@ -14,12 +14,12 @@ LABEL about.tags="Galaxy Tool Development package"
 LABEL extra.identifiers.biotools=planemo
 # Maintainer
 MAINTAINER Ross Lazarus <ross.lazarus@gmail.com>
-ARG GALAXY_RELEASE=release_20.05
+ARG GALAXY_RELEASE=release_20.09
 ARG GALAXY_REPO=https://github.com/galaxyproject/galaxy
 ARG GALAXY_ROOT=/home/biodocker/galaxy-central
 USER root
 RUN apt-get update \
-&& apt-get install -y python3 python3-venv python3-pip python3-wheel mercurial wget unzip nano nodeenv \
+&& apt-get install -y python3 python3-venv python3-pip python3-wheel mercurial wget unzip nano curl nodeenv \
 && mkdir -p /home/biodocker/.cache  /home/biodocker/toolfactory  \
 && chown -R root /home/biodocker/.cache \
 && python3 -m pip install --upgrade pip planemo==0.72.0 ephemeris==0.10.6 \
