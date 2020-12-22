@@ -19,11 +19,13 @@ ARG GALAXY_REPO=https://github.com/galaxyproject/galaxy
 ARG GALAXY_ROOT=/home/biodocker/galaxy-central
 USER root
 RUN apt-get update \
-&& apt-get install -y python3 python3-venv python3-pip python3-wheel mercurial wget unzip nano curl nodeenv \
+&& apt-get install -y python3 python3-venv python3-pip python3-wheel mercurial wget unzip nano curl nodeenv procps git \
 && mkdir -p /home/biodocker/.cache  /home/biodocker/toolfactory  \
 && chown -R root /home/biodocker/.cache \
 && python3 -m pip install --upgrade pip planemo==0.72.0 ephemeris==0.10.6 \
-&& cp /usr/local/bin/planemo /home/biodocker/bin/ \
+&& git clone --recursive https://github.com/fubar2/planemo.git /home/biodocker/planemo \
+&& cd /home/biodocker/planemo && python3 setup.py build && python3 setup.py install \
+##&& cp /usr/local/bin/planemo /home/biodocker/bin/ \
 && hg clone https://fubar@toolshed.g2.bx.psu.edu/repos/fubar/tacrev  /home/biodocker/tacrev \
 && mv /home/biodocker/tacrev/tacrev/* /home/biodocker/tacrev/ \
 && mkdir -p "$GALAXY_ROOT" \
@@ -40,7 +42,6 @@ RUN apt-get update \
 && chmod -R 755  /home/biodocker
 ENV PATH /home/biodocker/bin:$PATH
 ENV PLANEMO_GLOBAL_WORKSPACE=/home/biodocker/.planemo
-USER biodocker
 RUN . /home/biodocker/galaxy-central/.venv/bin/activate \
 && planemo test --galaxy_root /home/biodocker/galaxy-central /home/biodocker/tacrev/tacrev.xml
 # this fills the various planemo caches so the image doesn't need to install every time it tests
