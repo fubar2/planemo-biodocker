@@ -25,7 +25,8 @@ RUN apt-get update \
 && python3 -m pip install --upgrade pip planemo==0.72.0 ephemeris==0.10.6 \
 && git clone --recursive https://github.com/fubar2/planemo.git /home/biodocker/planemo \
 && cd /home/biodocker/planemo && python3 setup.py build && python3 setup.py install \
-##&& cp /usr/local/bin/planemo /home/biodocker/bin/ \
+&& planemo conda_init --conda_prefix /home/biodocker/planemo_conda --conda_channels bioconda,conda-forge \
+&& cp /usr/local/bin/planemo /home/biodocker/bin/ \
 && hg clone https://fubar@toolshed.g2.bx.psu.edu/repos/fubar/tacrev  /home/biodocker/tacrev \
 && mv /home/biodocker/tacrev/tacrev/* /home/biodocker/tacrev/ \
 && mkdir -p "$GALAXY_ROOT" \
@@ -42,6 +43,7 @@ RUN apt-get update \
 && chmod -R 755  /home/biodocker
 ENV PATH /home/biodocker/bin:$PATH
 ENV PLANEMO_GLOBAL_WORKSPACE=/home/biodocker/.planemo
+USER biodocker
 RUN . /home/biodocker/galaxy-central/.venv/bin/activate \
 && planemo test --galaxy_root /home/biodocker/galaxy-central /home/biodocker/tacrev/tacrev.xml
 # this fills the various planemo caches so the image doesn't need to install every time it tests
